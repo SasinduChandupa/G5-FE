@@ -1,4 +1,4 @@
-package com.example.authinevex;
+package com.example.g5fe;
 
 import com.example.g5fe.HttpClientHelper;
 import jakarta.servlet.ServletException;
@@ -17,7 +17,7 @@ public class LecturerLoginServlet extends HttpServlet {
 
         // Forward JSON to backend API
         String backendResponse = HttpClientHelper.sendPostRequest(
-                "http://localhost:8080/api/v1/lecturer/login", jsonInput);
+                "https://virtserver.swaggerhub.com/ChanukaDilshan-8ba/event-management_system_api/1.0.0/lecturer/login", jsonInput);
 
         response.setContentType("application/json");
         response.getWriter().write(backendResponse);

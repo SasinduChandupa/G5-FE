@@ -16,7 +16,7 @@ public class StudentRegisterServlet extends HttpServlet {
 
         // Forward JSON to backend API
         String backendResponse = com.example.g5fe.HttpClientHelper.sendPostRequest(
-                "http://localhost:8080/api/v1/admin/student/register", jsonInput);
+                "https://virtserver.swaggerhub.com/ChanukaDilshan-8ba/event-management_system_api/1.0.0/admin/student/register", jsonInput);
 
         response.setContentType("application/json");
         response.getWriter().write(backendResponse);
