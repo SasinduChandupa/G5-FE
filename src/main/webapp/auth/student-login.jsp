@@ -173,7 +173,7 @@
             // Handle successful login
             if (response.ok) {
                 alert(data.message || "Login Successful");
-                window.location.href = "/student/dashboard";
+                window.location.href = "../student.jsp";
             } else {
                 alert(data.message || "Login Failed. Please check your credentials.");
             }
