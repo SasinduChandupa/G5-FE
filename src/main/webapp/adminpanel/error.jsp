@@ -38,7 +38,7 @@
 <div class="error-container">
     <h1>Something went wrong</h1>
     <p class="error-message"><%= request.getParameter("message") %></p>
-    <a href="../adminlogin.jsp">Go to Login Page</a>
+    <a href="../admin-login.jsp">Go to Login Page</a>
 </div>
 </body>
 </html>

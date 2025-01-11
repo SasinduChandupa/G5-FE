@@ -4,7 +4,7 @@
     // Access the session and retrieve the userID
     String sessionId = (String) session.getAttribute("userID");
     if (sessionId == null || sessionId.isEmpty()) {
-        response.sendRedirect("./logout.jsp");
+        response.sendRedirect("../logout.jsp");
         return;
     }
 %>
