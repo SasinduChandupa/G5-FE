@@ -62,8 +62,7 @@
         }
     </style>
 </head>
-<body class="relative bg-cover bg-center sm:bg-auto lg:bg-cover" style="background-image: url('auth/images/Galle_1.jpg');">
-
+<body class="relative" style="background-image: url('auth/images/Galle_2.jpg'); background-size: cover; background-position: center; height: 100vh; margin: 0; background-attachment: fixed;">
 <!-- Navigation Bar -->
 <nav class="bg-gray-900 text-white shadow-md fixed w-full top-0 z-20">
     <div class="container mx-auto px-6 py-4 flex justify-between items-center">
@@ -72,28 +71,27 @@
             <img src="images/nibm.jpg" alt="EVEX Logo"
                  class="logo w-30 cursor-pointer max-h-20 px-5">
 
+
+        </div>
+        <!-- Navigation Links -->
+        <div class="flex space-x-6">
             <!-- Text Animation -->
             <span class="brand-title text-white text-2xl font-bold">
                 NIBM EVEX
             </span>
         </div>
-        <!-- Navigation Links -->
-        <div class="flex space-x-6">
-            <a href="#" class="hover:text-green-400 transition">Home</a>
-            <a href="#about-section" class="hover:text-green-400 transition">About</a>
-        </div>
     </div>
 </nav>
 
 <!-- Main Section with Background Image -->
-<section class="relative pt-20 h-screen w-full flex flex-col items-center justify-center text-center">
+<section class="relative pt-20 w-full flex flex-col items-center justify-center text-center" style="height: 40vh; background: none;">
     <!-- Hero Image Content -->
-    <div class="absolute inset-0 bg-black opacity-20"></div>
     <div class="relative z-10 text-white">
         <h1 class="text-5xl md:text-6xl font-bold mb-4 hero-title">Welcome to Our Platform</h1>
         <p class="text-lg md:text-2xl mb-6">Your gateway to efficient student and lecturer management</p>
     </div>
 </section>
+
 
 <!-- Role Selection Section -->
 <section class="bg-white rounded-lg sm:px-6 md:px-20 py-8 mx-4 shadow-lg bg-white/80 p-8 mx-auto w-full max-w-md relative z-20 -mt-20 shadow-lg">
@@ -103,39 +101,17 @@
 
     <!-- Role Selection Buttons -->
     <div class="space-y-4">
-        <a href="auth/admin-login.jsp" class="block bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-md text-center">
+        <a href="admin-login.jsp" class="block bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-md text-center">
             Admin Login
         </a>
-        <a href="auth/student-login.jsp" class="block bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-md text-center">
+        <a href="student-login.jsp" class="block bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-md text-center">
             Student Login
         </a>
-        <a href="auth/lecturer-login.jsp" class="block bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-3 px-4 rounded-md text-center">
+        <a href="lecturer-login.jsp" class="block bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-3 px-4 rounded-md text-center">
             Lecturer Login
         </a>
-        <a href="auth/student-register.jsp" class="block bg-pink-600 hover:bg-pink-700 text-white font-medium py-3 px-4 rounded-md text-center">
-            Student Register
-        </a>
-        <a href="auth/lecturer-register.jsp" class="block bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-md text-center">
-            Lecturer Register
-        </a>
     </div>
 </section>
-
-
-<!-- About Section -->
-<section id="about-section" class="sm:px-6 md:px-20 py-3 mx-4 shadow-lg bg-blue/80">
-    <div class="max-w-5xl mx-auto text-center">
-        <h2 class="text-5xl md:text-6xl font-bold mb-4 about-title drop-shadow text-[#add8e6] mb-6">ABOUT US</h2>
-
-        <p class="text-lg text-gray-200 mt-4 drop-shadow-md">
-            About NIBM EVEX
-            Welcome to NIBM EVEX, the premier Event Management System designed exclusively for the NIBMGALLE campus. Our mission is to provide an efficient, user-friendly platform for organizing, managing, and attending events seamlessly. Whether you're a student, lecturer, or admin, NIBM EVEX is tailored to meet your needs with its intuitive design and robust functionality.
-            What is NIBM EVEX?
-            NIBM EVEX is an integrated event management platform that simplifies the process of event creation, management, and participation. From conferences and workshops to seminars and social events, NIBM EVEX allows faculty members, students, and administrators to stay connected and involved in all campus activities.
-        </p>
-    </div>
-</section>
-
 
 <!-- Footer Section -->
 <footer class="bg-black/60 text-white">

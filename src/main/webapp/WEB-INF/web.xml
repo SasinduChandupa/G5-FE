@@ -3,64 +3,8 @@
     <display-name>G5 Event Management</display-name>
 
     <!-- Admin Login Servlet -->
-    <servlet>
-        <servlet-name>AdminLoginServlet</servlet-name>
-        <servlet-class>com.example.g5fe.AdminLoginServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AdminLoginServlet</servlet-name>
-        <url-pattern>/auth/admin-login</url-pattern>
-    </servlet-mapping>
 
-    <!-- Student Login Servlet -->
-    <servlet>
-        <servlet-name>StudentLoginServlet</servlet-name>
-        <servlet-class>com.example.g5fe.StudentLoginServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>StudentLoginServlet</servlet-name>
-        <url-pattern>/auth/student-login</url-pattern>
-    </servlet-mapping>
 
-    <!-- Lecturer Login Servlet -->
-    <servlet>
-        <servlet-name>LecturerLoginServlet</servlet-name>
-        <servlet-class>com.example.g5fe.LecturerLoginServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>LecturerLoginServlet</servlet-name>
-        <url-pattern>/auth/lecturer-login</url-pattern>
-    </servlet-mapping>
-
-    <!-- Lecturer Register Servlet -->
-    <servlet>
-        <servlet-name>LecturerRegisterServlet</servlet-name>
-        <servlet-class>com.example.g5fe.LecturerRegisterServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>LecturerRegisterServlet</servlet-name>
-        <url-pattern>/auth/lecturer-register</url-pattern>
-    </servlet-mapping>
-
-    <!-- Student Register Servlet -->
-    <servlet>
-        <servlet-name>StudentRegisterServlet</servlet-name>
-        <servlet-class>com.example.g5fe.StudentRegisterServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>StudentRegisterServlet</servlet-name>
-        <url-pattern>/auth/student-register</url-pattern>
-    </servlet-mapping>
-
-    <!-- Logout Servlet -->
-    <servlet>
-        <servlet-name>LogoutServlet</servlet-name>
-        <servlet-class>com.example.g5fe.LogoutServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>LogoutServlet</servlet-name>
-        <url-pattern>/auth/logout</url-pattern>
-    </servlet-mapping>
 
     <!-- Default Servlet for Testing -->
     <servlet>
