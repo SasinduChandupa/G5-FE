@@ -131,7 +131,7 @@
             if (response.ok) {
                 document.getElementById("result").innerText = "Login successful! Redirecting...";
                 setTimeout(() => {
-                    window.location.href = "adminpanel/admindashboard.jsp"; // Redirect after successful login
+                    window.location.href = "adminpanel/sessionHandler.jsp"; // Redirect after successful login
                 }, 2000);
             } else {
                 const error = await response.text();
