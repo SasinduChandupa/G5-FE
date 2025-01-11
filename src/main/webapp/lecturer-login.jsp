@@ -130,7 +130,7 @@
             if (response.ok) {
                 document.getElementById("result").innerText = "Login successful! Redirecting...";
                 setTimeout(() => {
-                    window.location.href = "lecturerpanel/lecturerdashboard.jsp"; // Redirect after successful login
+                    window.location.href = "Lecturer/sessionhandler.jsp"; // Redirect after successful login
                 }, 2000);
             } else {
                 const error = await response.text();
