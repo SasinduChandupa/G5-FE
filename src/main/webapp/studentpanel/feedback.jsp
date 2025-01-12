@@ -97,7 +97,7 @@
             message = "Please fill in all fields.";
             messageType = "error";
         } else {
-            String apiUrl = "http://ec2-13-60-79-77.eu-north-1.compute.amazonaws.com:8081/api/v1/student/send";
+            String apiUrl = "http://ec2-51-20-114-214.eu-north-1.compute.amazonaws.com:8081/api/v1/student/send";
             HttpURLConnection connection = null;
 
             try {

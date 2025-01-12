@@ -41,7 +41,7 @@
 %>
 <p class="message error">Student ID is missing!</p>
 <% } else {
-    String apiUrl = "http://ec2-13-60-79-77.eu-north-1.compute.amazonaws.com:8081/api/v1/admin/student/remove/" + sid;
+    String apiUrl = "http://ec2-51-20-114-214.eu-north-1.compute.amazonaws.com:8081/api/v1/admin/student/remove/" + sid;
     try {
         URL url = new URL(apiUrl);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();

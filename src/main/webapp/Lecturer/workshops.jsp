@@ -33,7 +33,7 @@
 
     <!-- Fetch Data from API -->
     <%
-        String apiUrl = "http://ec2-13-60-79-77.eu-north-1.compute.amazonaws.com:8081/api/v1/lecturer/workshops";
+        String apiUrl = "http://ec2-51-20-114-214.eu-north-1.compute.amazonaws.com:8081/api/v1/lecturer/workshops";
         JSONArray upcomingWorkshops = new JSONArray();
         JSONArray ongoingWorkshops = new JSONArray();
         JSONArray completedWorkshops = new JSONArray();

@@ -33,8 +33,8 @@
     <div class="bg-white shadow rounded-lg p-6">
         <%
             String workshopId = request.getParameter("workshopId");
-            String studentsApiUrl = "http://ec2-13-60-79-77.eu-north-1.compute.amazonaws.com:8081/api/v1/workshop/" + workshopId + "/students";
-            String feedbackApiUrl = "http://ec2-13-60-79-77.eu-north-1.compute.amazonaws.com:8081/api/v1/lecturer/received";
+            String studentsApiUrl = "http://ec2-51-20-114-214.eu-north-1.compute.amazonaws.com:8081/api/v1/workshop/" + workshopId + "/students";
+            String feedbackApiUrl = "http://ec2-51-20-114-214.eu-north-1.compute.amazonaws.com:8081/api/v1/lecturer/received";
 
             HttpURLConnection studentConnection = null;
             HttpURLConnection feedbackConnection = null;
