@@ -90,7 +90,7 @@
 <div class="container">
     <h1>Manage Students</h1>
     <%
-        String apiUrl = "http://ec2-13-60-79-77.eu-north-1.compute.amazonaws.com:8081/api/v1/admin/students";
+        String apiUrl = "http://ec2-51-20-114-214.eu-north-1.compute.amazonaws.com:8081/api/v1/admin/students";
         String studentsData = null;
 
         try {

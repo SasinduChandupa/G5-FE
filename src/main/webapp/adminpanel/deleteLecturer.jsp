@@ -41,7 +41,7 @@
 %>
 <p class="message error">Lecturer ID is missing!</p>
 <% } else {
-    String apiUrl = "http://ec2-13-60-79-77.eu-north-1.compute.amazonaws.com:8081/api/v1/admin/lecturer/remove/" + lid;
+    String apiUrl = "http://ec2-51-20-114-214.eu-north-1.compute.amazonaws.com:8081/api/v1/admin/lecturer/remove/" + lid;
     try {
         URL url = new URL(apiUrl);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();

@@ -17,7 +17,7 @@
 %>
 <%
     // The API endpoint URL
-    String apiUrl = "http://ec2-13-60-79-77.eu-north-1.compute.amazonaws.com:8081/api/v1/students/announcements";
+    String apiUrl = "http://ec2-51-20-114-214.eu-north-1.compute.amazonaws.com:8081/api/v1/students/announcements";
 
     // Set response content type to HTML
     response.setContentType("text/html");

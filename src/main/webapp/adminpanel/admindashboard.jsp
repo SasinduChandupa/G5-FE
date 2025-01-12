@@ -49,7 +49,7 @@
     <h1>Admin Dashboard</h1>
     <canvas id="adminChart" width="400" height="200"></canvas>
     <%
-        String apiUrl = "http://localhost:8081/api/v1/admin/state";
+        String apiUrl = "http://ec2-51-20-114-214.eu-north-1.compute.amazonaws.com:8081/api/v1/admin/state";
         JSONObject adminData = null;
         try {
             URL url = new URL(apiUrl);

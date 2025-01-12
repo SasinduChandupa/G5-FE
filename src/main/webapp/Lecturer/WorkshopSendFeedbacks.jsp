@@ -33,7 +33,7 @@
 
   // Fetch students for the workshop
   if (workshopID != null && !workshopID.isEmpty()) {
-    String apiUrl = "http://ec2-13-60-79-77.eu-north-1.compute.amazonaws.com:8081/api/v1/workshop/" + workshopID + "/students";
+    String apiUrl = "http://ec2-51-20-114-214.eu-north-1.compute.amazonaws.com:8081/api/v1/workshop/" + workshopID + "/students";
     try {
       URL url = new URL(apiUrl);
       HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -73,7 +73,7 @@
 
     if (description != null && !description.isEmpty() && sid != null && !sid.isEmpty() && workshopID != null) {
       try {
-        URL feedbackUrl = new URL("http://ec2-13-60-79-77.eu-north-1.compute.amazonaws.com:8081/api/v1/lecturer/send");
+        URL feedbackUrl = new URL("http://ec2-51-20-114-214.eu-north-1.compute.amazonaws.com:8081/api/v1/lecturer/send");
         HttpURLConnection feedbackConnection = (HttpURLConnection) feedbackUrl.openConnection();
         feedbackConnection.setRequestMethod("POST");
         feedbackConnection.setRequestProperty("Content-Type", "application/json");

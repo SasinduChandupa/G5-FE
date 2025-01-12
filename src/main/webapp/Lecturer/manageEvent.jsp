@@ -38,7 +38,7 @@
         <h2 class="text-2xl font-bold mb-6 text-gray-800">Manage Events</h2>
 
         <%
-            String apiUrl = "http://ec2-13-60-79-77.eu-north-1.compute.amazonaws.com:8081/api/v1/event/all";
+            String apiUrl = "http://ec2-51-20-114-214.eu-north-1.compute.amazonaws.com:8081/api/v1/event/all";
             JSONArray allEvents = new JSONArray();
             String errorMessage = "";
             String successMessage = "";
@@ -82,7 +82,7 @@
                 String newStatus = request.getParameter("status");
 
                 try {
-                    String updateUrl = "http://ec2-13-60-79-77.eu-north-1.compute.amazonaws.com:8081/api/v1/lecturer/events/" + eid + "/status?status=" + newStatus;
+                    String updateUrl = "http://ec2-51-20-114-214.eu-north-1.compute.amazonaws.com:8081/api/v1/lecturer/events/" + eid + "/status?status=" + newStatus;
                     URL url = new URL(updateUrl);
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("PUT");
@@ -115,7 +115,7 @@
                 String eid = request.getParameter("eid");
 
                 try {
-                    String deleteUrl = "http://ec2-13-60-79-77.eu-north-1.compute.amazonaws.com:8081/api/v1/event/delete/" + eid;
+                    String deleteUrl = "http://ec2-51-20-114-214.eu-north-1.compute.amazonaws.com:8081/api/v1/event/delete/" + eid;
                     URL url = new URL(deleteUrl);
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("DELETE");

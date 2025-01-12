@@ -110,7 +110,7 @@
 </div>
 
 <script>
-    const studentLoginEndpoint = "http://ec2-13-60-79-77.eu-north-1.compute.amazonaws.com:8081/api/v1/lecturer/login";
+    const studentLoginEndpoint = "http://ec2-51-20-114-214.eu-north-1.compute.amazonaws.com:8081/api/v1/lecturer/login";
 
     // Student Login Function
     async function studentLogin() {

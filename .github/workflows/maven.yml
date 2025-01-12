@@ -24,25 +24,25 @@ jobs:
       - name: Build with Maven
         run: mvn -B package -DskipTests --file pom.xml
 
-      # Deploy the WAR file to Tomcat
-      - name: Deploy to Tomcat
-        run: |
-          echo "Deploying WAR file to Tomcat..."
-
-          # Define paths
-          TOMCAT_BIN_DIR=/usr/share/tomcat10/bin
-          TOMCAT_WEBAPPS_DIR=/var/lib/tomcat10/webapps
-          WAR_FILE=/home/ubuntu/actions-runner/_work/G5-FE/G5-FE/target/G5-FE-1.0-SNAPSHOT.war
-
-          # Stop Tomcat
-          $TOMCAT_BIN_DIR/shutdown.sh
-          echo "Stopped Tomcat"
-
-          # Deploy the WAR file
-          sudo cp $WAR_FILE $TOMCAT_WEBAPPS_DIR/
-          echo "WAR file copied to webapps/"
-
-
-          # Start Tomcat
-          sudo $TOMCAT_BIN_DIR/startup.sh
-          echo "Started Tomcat"
+#      # Deploy the WAR file to Tomcat
+#      - name: Deploy to Tomcat
+#        run: |
+#          echo "Deploying WAR file to Tomcat..."
+#
+#          # Define paths
+#          TOMCAT_BIN_DIR=/usr/share/tomcat10/bin
+#          TOMCAT_WEBAPPS_DIR=/var/lib/tomcat10/webapps
+#          WAR_FILE=/home/ubuntu/actions-runner/_work/G5-FE/G5-FE/target/G5-FE-1.0-SNAPSHOT.war
+#
+#          # Stop Tomcat
+#          $TOMCAT_BIN_DIR/shutdown.sh
+#          echo "Stopped Tomcat"
+#
+#          # Deploy the WAR file
+#          sudo cp $WAR_FILE $TOMCAT_WEBAPPS_DIR/
+#          echo "WAR file copied to webapps/"
+#
+#
+#          # Start Tomcat
+#          sudo $TOMCAT_BIN_DIR/startup.sh
+#          echo "Started Tomcat"
