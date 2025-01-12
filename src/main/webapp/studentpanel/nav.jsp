@@ -28,8 +28,6 @@
         <div class="flex space-x-6">
             <a href="studentdashboard.jsp" class="hover:text-green-400 transition">Home</a>
             <!-- Additional Navigation Links -->
-            <a href="editprofile.jsp" class="hover:text-green-400 transition">Update Profile</a>
-            <a href="updateportfolio.jsp" class="hover:text-green-400 transition">Career Portfolio</a>
             <a href="Interviews.jsp" class="hover:text-green-400 transition">View Interviews</a>
             <a href="Workshops.jsp" class="hover:text-green-400 transition">View Workshops</a>
             <a href="viewfeedback.jsp" class="hover:text-green-400 transition">View Feedback</a>
