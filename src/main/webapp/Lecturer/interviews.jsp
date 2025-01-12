@@ -106,23 +106,19 @@
         }
     %>
 
-    <!-- Display Interviews -->
-    <% for (int i = 0; i < completedInterviews.length(); i++) {
-        JSONObject interview = completedInterviews.getJSONObject(i);
-        String eid = interview.optString("eid", "N/A");
-        String interviewer = interview.optString("interviewer", "N/A");
-        String location = interview.optString("location", "N/A");
-        String date = interview.optString("date", "N/A");
-    %>
+    <!-- Completed Interviews -->
+    <h2 class="text-lg font-bold mb-4">Completed Interviews</h2>
+    <% for (int i = 0; i < completedInterviews.length(); i++) { %>
+    <% JSONObject interview = completedInterviews.getJSONObject(i); %>
     <div class="bg-white shadow-md p-4 rounded-lg mb-6">
-        <p><strong>ID:</strong> <%= eid %></p>
-        <p><strong>Interviewer:</strong> <%= interviewer %></p>
-        <p><strong>Location:</strong> <%= location %></p>
-        <p><strong>Date:</strong> <%= date %></p>
+        <p><strong>ID:</strong> <%= interview.optString("eid", "N/A") %></p>
+        <p><strong>Interviewer:</strong> <%= interview.optString("interviewer", "N/A") %></p>
+        <p><strong>Location:</strong> <%= interview.optString("location", "N/A") %></p>
+        <p><strong>Date:</strong> <%= interview.optString("date", "N/A") %></p>
 
         <!-- Send feedback Button -->
         <form method="GET" action="InterviewSendFeedbacks.jsp" class="inline-block">
-            <input type="hidden" name="eid" value="<%= eid %>">
+            <input type="hidden" name="eid" value="<%= interview.optString("eid", "N/A") %>">
             <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded mt-2">
                 Send Feedbacks
             </button>
@@ -130,7 +126,63 @@
 
         <!-- Assign Students Button -->
         <form method="GET" action="assign.jsp" class="inline-block ml-2">
-            <input type="hidden" name="eid" value="<%= eid %>">
+            <input type="hidden" name="eid" value="<%= interview.optString("eid", "N/A") %>">
+            <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded mt-2">
+                Assign Students
+            </button>
+        </form>
+    </div>
+    <% } %>
+
+    <!-- Ongoing Interviews -->
+    <h2 class="text-lg font-bold mb-4">Ongoing Interviews</h2>
+    <% for (int i = 0; i < ongoingInterviews.length(); i++) { %>
+    <% JSONObject interview = ongoingInterviews.getJSONObject(i); %>
+    <div class="bg-white shadow-md p-4 rounded-lg mb-6">
+        <p><strong>ID:</strong> <%= interview.optString("eid", "N/A") %></p>
+        <p><strong>Interviewer:</strong> <%= interview.optString("interviewer", "N/A") %></p>
+        <p><strong>Location:</strong> <%= interview.optString("location", "N/A") %></p>
+        <p><strong>Date:</strong> <%= interview.optString("date", "N/A") %></p>
+
+        <!-- Send feedback Button -->
+        <form method="GET" action="InterviewSendFeedbacks.jsp" class="inline-block">
+            <input type="hidden" name="eid" value="<%= interview.optString("eid", "N/A") %>">
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded mt-2">
+                Send Feedbacks
+            </button>
+        </form>
+
+        <!-- Assign Students Button -->
+        <form method="GET" action="assign.jsp" class="inline-block ml-2">
+            <input type="hidden" name="eid" value="<%= interview.optString("eid", "N/A") %>">
+            <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded mt-2">
+                Assign Students
+            </button>
+        </form>
+    </div>
+    <% } %>
+
+    <!-- Upcoming Interviews -->
+    <h2 class="text-lg font-bold mb-4">Upcoming Interviews</h2>
+    <% for (int i = 0; i < upcomingInterviews.length(); i++) { %>
+    <% JSONObject interview = upcomingInterviews.getJSONObject(i); %>
+    <div class="bg-white shadow-md p-4 rounded-lg mb-6">
+        <p><strong>ID:</strong> <%= interview.optString("eid", "N/A") %></p>
+        <p><strong>Interviewer:</strong> <%= interview.optString("interviewer", "N/A") %></p>
+        <p><strong>Location:</strong> <%= interview.optString("location", "N/A") %></p>
+        <p><strong>Date:</strong> <%= interview.optString("date", "N/A") %></p>
+
+        <!-- Send feedback Button -->
+        <form method="GET" action="InterviewSendFeedbacks.jsp" class="inline-block">
+            <input type="hidden" name="eid" value="<%= interview.optString("eid", "N/A") %>">
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded mt-2">
+                Send Feedbacks
+            </button>
+        </form>
+
+        <!-- Assign Students Button -->
+        <form method="GET" action="assign.jsp" class="inline-block ml-2">
+            <input type="hidden" name="eid" value="<%= interview.optString("eid", "N/A") %>">
             <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded mt-2">
                 Assign Students
             </button>
@@ -142,7 +194,7 @@
 <!-- Footer -->
 <footer
         class="bg-gradient-to-r from-blue-800 to-blue-700 text-white text-center py-6 mt-auto shadow-inner">
-    <p class="text-sm font-light">© 2025 NIBMEvex. All Rights Reserved.</p>
+    <p class="text-sm font-light">&copy; 2025 NIBMEvex. All Rights Reserved.</p>
 </footer>
 
 </body>
