@@ -7,7 +7,7 @@ on:
 jobs:
   build:
     runs-on: self-hosted
-    timeout-minutes: 2  # Timeout the entire job after 2 minutes
+    timeout-minutes: 2 
 
     steps:
       - uses: actions/checkout@v4
