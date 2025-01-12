@@ -3,7 +3,7 @@
 <%
     try {
         // Define the API endpoint
-        URL url = new URL("http://localhost:8080/api/v1/session/details");
+        URL url = new URL("http://ec2-13-60-79-77.eu-north-1.compute.amazonaws.com:8081/api/v1/session/details");
 
         // Open the connection
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();

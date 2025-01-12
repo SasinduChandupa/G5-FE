@@ -33,7 +33,7 @@
 
     if (eid != null && !eid.isEmpty()) {
       try {
-        URL apiUrl = new URL("http://localhost:8080/api/v1/interview/" + eid + "/students");
+        URL apiUrl = new URL("http://ec2-13-60-79-77.eu-north-1.compute.amazonaws.com:8081/api/v1/interview/" + eid + "/students");
         HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
         connection.setRequestMethod("GET");
         connection.setRequestProperty("Content-Type", "application/json");
@@ -70,7 +70,7 @@
 
       if (description != null && !description.isEmpty() && sid != null && !sid.isEmpty() && eid != null) {
         try {
-          URL feedbackUrl = new URL("http://localhost:8080/api/v1/lecturer/send");
+          URL feedbackUrl = new URL("http://ec2-13-60-79-77.eu-north-1.compute.amazonaws.com:8081/api/v1/lecturer/send");
           HttpURLConnection feedbackConnection = (HttpURLConnection) feedbackUrl.openConnection();
           feedbackConnection.setRequestMethod("POST");
           feedbackConnection.setRequestProperty("Content-Type", "application/json");

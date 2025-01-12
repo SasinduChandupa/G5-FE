@@ -83,7 +83,7 @@
 <div class="container">
     <h1>Manage Batches</h1>
     <%
-        String apiUrl = "http://localhost:8080/api/v1/admin/batches/all";
+        String apiUrl = "http://ec2-13-60-79-77.eu-north-1.compute.amazonaws.com:8081/api/v1/admin/batches/all";
         String batchesData = null;
 
         try {

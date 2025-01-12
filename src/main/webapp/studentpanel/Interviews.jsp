@@ -89,7 +89,7 @@
     <tbody>
     <%
         // The API endpoint URL
-        String apiUrl = "http://localhost:8080/api/v1/students/interviews";
+        String apiUrl = "http://ec2-13-60-79-77.eu-north-1.compute.amazonaws.com:8081/api/v1/students/interviews";
 
         HttpURLConnection connection = null;
         StringBuilder responseContent = new StringBuilder();

@@ -39,9 +39,9 @@
         }
 
         // API endpoints
-        String apiUrlBatches = "http://localhost:8080/api/v1/lecturer/badges";
-        String apiUrlStudents = "http://localhost:8080/api/v1/lecturer/students/";
-        String apiUrlAssign = "http://localhost:8080/api/v1/lecturer/assign/interviews";
+        String apiUrlBatches = "http://ec2-13-60-79-77.eu-north-1.compute.amazonaws.com:8081/api/v1/lecturer/badges";
+        String apiUrlStudents = "http://ec2-13-60-79-77.eu-north-1.compute.amazonaws.com:8081/api/v1/lecturer/students/";
+        String apiUrlAssign = "http://ec2-13-60-79-77.eu-north-1.compute.amazonaws.com:8081/api/v1/lecturer/assign/interviews";
         JSONArray badges = new JSONArray();
         JSONArray students = new JSONArray();
         String selectedBatch = request.getParameter("batchId");

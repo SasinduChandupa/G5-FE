@@ -72,7 +72,7 @@
             <select id="batchId" name="batchId" class="w-full px-4 py-2 border rounded-md" required>
                 <option value="">Select Batch</option>
                 <%
-                    String batchApiUrl = "http://localhost:8080/api/v1/lecturer/badges";
+                    String batchApiUrl = "http://ec2-13-60-79-77.eu-north-1.compute.amazonaws.com:8081/api/v1/lecturer/badges";
                     try {
                         // Get batches from API
                         URL url = new URL(batchApiUrl);
@@ -137,7 +137,7 @@
                     String batchId = request.getParameter("batchId");
 
                     // Set up the connection to the API endpoint
-                    String apiUrl = "http://localhost:8080/api/v1/lecturer/events/create/workshop";
+                    String apiUrl = "http://ec2-13-60-79-77.eu-north-1.compute.amazonaws.com:8081/api/v1/lecturer/events/create/workshop";
                     URL url = new URL(apiUrl);
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("POST");

@@ -39,7 +39,7 @@
 
         try {
             // Connect to the backend API
-            URL url = new URL("http://localhost:8080/api/v1/lecturer/received");
+            URL url = new URL("http://ec2-13-60-79-77.eu-north-1.compute.amazonaws.com:8081/api/v1/lecturer/received");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Accept", "application/json");

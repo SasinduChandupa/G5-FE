@@ -20,7 +20,7 @@
 </head>
 <body class="bg-gray-100 h-screen flex flex-col">
 <%
-    String batchApiUrl = "http://localhost:8080/api/v1/lecturer/badges";
+    String batchApiUrl = "http://ec2-13-60-79-77.eu-north-1.compute.amazonaws.com:8081/api/v1/lecturer/badges";
     String batchDataJson = "[]";
 
     try {
@@ -67,7 +67,7 @@
 
         String message = "";
         try {
-            String announcementApiUrl = "http://localhost:8080/api/v1/lecturer/announcements";
+            String announcementApiUrl = "http://ec2-13-60-79-77.eu-north-1.compute.amazonaws.com:8081/api/v1/lecturer/announcements";
             URL url = new URL(announcementApiUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");

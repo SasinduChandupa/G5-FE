@@ -112,7 +112,7 @@
                 <select id="badge" name="badge" required>
                     <option value="">Select Badge</option>
                     <%
-                        String apiUrl = "http://localhost:8080/api/v1/admin/batches/all";
+                        String apiUrl = "http://ec2-13-60-79-77.eu-north-1.compute.amazonaws.com:8081/api/v1/admin/batches/all";
                         try {
                             URL url = new URL(apiUrl);
                             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -166,7 +166,7 @@
 
             if (name != null && email != null && username != null && password != null && age != null && badge != null) {
                 try {
-                    URL url = new URL("http://localhost:8080/api/v1/admin/student/register");
+                    URL url = new URL("http://ec2-13-60-79-77.eu-north-1.compute.amazonaws.com:8081/api/v1/admin/student/register");
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("POST");
                     connection.setRequestProperty("Content-Type", "application/json");

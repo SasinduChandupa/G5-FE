@@ -93,7 +93,7 @@
             status = "all"; // Default to "all" to show both complete and upcoming events
         }
 
-        String apiUrl = "http://localhost:8080/api/v1/admin/events";
+        String apiUrl = "http://ec2-13-60-79-77.eu-north-1.compute.amazonaws.com:8081/api/v1/admin/events";
         if (!status.equals("all")) {
             apiUrl += "?status=" + status;  // Add status filter if it's not "all"
         }
