@@ -5,9 +5,11 @@
 <%@ page import="org.json.JSONArray" %>
 <%@ page import="org.json.JSONObject" %>
 <%
-    // Access the session and retrieve the userID
+    // Access the session and retrieve the userID and sessionCookie
     String sessionId = (String) session.getAttribute("userID");
-    if (sessionId == null || sessionId.isEmpty()) {
+    String sessionCookie = (String) session.getAttribute("sessionCookie");
+
+    if (sessionId == null || sessionId.isEmpty() || sessionCookie == null || sessionCookie.isEmpty()) {
         response.sendRedirect("./logout.jsp");
         return;
     }
@@ -44,11 +46,8 @@
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Accept", "application/json");
 
-            // Forward session cookies
-            String cookies = request.getHeader("Cookie");
-            if (cookies != null) {
-                connection.setRequestProperty("Cookie", cookies);
-            }
+            // Pass session cookie for authentication
+            connection.setRequestProperty("Cookie", sessionCookie);
 
             int responseCode = connection.getResponseCode();
             if (responseCode == 200) {

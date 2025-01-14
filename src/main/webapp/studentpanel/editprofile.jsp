@@ -99,9 +99,10 @@
                 connection.setRequestMethod("PUT");
                 connection.setRequestProperty("Content-Type", "application/json");
 
-                String cookies = request.getHeader("Cookie");
-                if (cookies != null) {
-                    connection.setRequestProperty("Cookie", cookies);
+                // Pass cookies correctly
+                String sessionCookie = (String) session.getAttribute("sessionCookie");
+                if (sessionCookie != null) {
+                    connection.setRequestProperty("Cookie", sessionCookie);
                 }
 
                 connection.setDoOutput(true);
@@ -176,7 +177,6 @@
             Update Profile
         </button>
     </form>
-
 
     <% if (alertMessage != null) { %>
     <div class="alert alert-<%= alertType %>"><%= alertMessage %></div>

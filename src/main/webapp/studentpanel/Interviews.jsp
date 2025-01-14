@@ -5,9 +5,10 @@
 <!-- Include the Navigation Bar -->
 <%@ include file="nav.jsp" %>
 <%
-    // Access the session and retrieve the userID
+    // Access the session and retrieve the userID and sessionCookie
     String sessionId = (String) session.getAttribute("userID");
-    if (sessionId == null || sessionId.isEmpty()) {
+    String sessionCookie = (String) session.getAttribute("sessionCookie");
+    if (sessionId == null || sessionId.isEmpty() || sessionCookie == null) {
         response.sendRedirect("../logout.jsp");
         return;
     }
@@ -27,8 +28,8 @@
         }
         h2 {
             color: #333;
-            font-weight: bold;  /* Make the text bold */
-            font-size: 32px;     /* Increase the font size */
+            font-weight: bold;
+            font-size: 32px;
         }
         table {
             width: 100%;
@@ -103,11 +104,8 @@
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Accept", "application/json");
 
-            // Ensure cookies are sent if available
-            String cookieHeader = request.getHeader("Cookie");
-            if (cookieHeader != null) {
-                connection.setRequestProperty("Cookie", cookieHeader);
-            }
+            // Add the session cookie for authentication
+            connection.setRequestProperty("Cookie", sessionCookie);
 
             // Read the response
             int statusCode = connection.getResponseCode();

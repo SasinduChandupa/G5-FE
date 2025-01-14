@@ -2,9 +2,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <jsp:include page="navbar.jsp" />
 <%
-    // Access the session and retrieve the userID
+    // Access the session and retrieve the userID and sessionCookie
     String sessionId = (String) session.getAttribute("userID");
-    if (sessionId == null || sessionId.isEmpty()) {
+    String sessionCookie = (String) session.getAttribute("sessionCookie");
+
+    if (sessionId == null || sessionId.isEmpty() || sessionCookie == null || sessionCookie.isEmpty()) {
         response.sendRedirect("./logout.jsp");
         return;
     }
@@ -43,7 +45,7 @@
                 URL studentsUrl = new URL(studentsApiUrl);
                 studentConnection = (HttpURLConnection) studentsUrl.openConnection();
                 studentConnection.setRequestMethod("GET");
-                studentConnection.setRequestProperty("Cookie", request.getHeader("Cookie"));
+                studentConnection.setRequestProperty("Cookie", sessionCookie);
                 studentConnection.setRequestProperty("Accept", "application/json");
 
                 int studentStatus = studentConnection.getResponseCode();
@@ -64,7 +66,7 @@
                 URL feedbackUrl = new URL(feedbackApiUrl);
                 feedbackConnection = (HttpURLConnection) feedbackUrl.openConnection();
                 feedbackConnection.setRequestMethod("GET");
-                feedbackConnection.setRequestProperty("Cookie", request.getHeader("Cookie"));
+                feedbackConnection.setRequestProperty("Cookie", sessionCookie);
                 feedbackConnection.setRequestProperty("Accept", "application/json");
 
                 int feedbackStatus = feedbackConnection.getResponseCode();

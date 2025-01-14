@@ -7,9 +7,11 @@
 <%@ page import="java.io.OutputStream" %>
 <jsp:include page="navbar.jsp" />
 <%
-    // Access the session and retrieve the userID
+    // Access the session and retrieve the userID and sessionCookie
     String sessionId = (String) session.getAttribute("userID");
-    if (sessionId == null || sessionId.isEmpty()) {
+    String sessionCookie = (String) session.getAttribute("sessionCookie");
+
+    if (sessionId == null || sessionId.isEmpty() || sessionCookie == null || sessionCookie.isEmpty()) {
         response.sendRedirect("./logout.jsp");
         return;
     }
@@ -34,7 +36,7 @@
         // Fetch `eid` from request parameters
         String eid = request.getParameter("eid");
         if (eid == null || eid.isEmpty()) {
-            //out.println("<div class='text-red-500 font-bold'>Error: Missing or invalid Event ID.</div>");
+            response.sendRedirect("./error.jsp"); // Redirect to an error page if `eid` is missing
             return;
         }
 
@@ -45,7 +47,6 @@
         JSONArray badges = new JSONArray();
         JSONArray students = new JSONArray();
         String selectedBatch = request.getParameter("batchId");
-        String debugMessage = "";
         String successMessage = "";
 
         try {
@@ -53,11 +54,7 @@
             URL urlBatches = new URL(apiUrlBatches);
             HttpURLConnection connectionBatches = (HttpURLConnection) urlBatches.openConnection();
             connectionBatches.setRequestMethod("GET");
-
-            String cookie = request.getHeader("Cookie");
-            if (cookie != null) {
-                connectionBatches.setRequestProperty("Cookie", cookie);
-            }
+            connectionBatches.setRequestProperty("Cookie", sessionCookie);
 
             if (connectionBatches.getResponseCode() == 200) {
                 try (BufferedReader reader = new BufferedReader(new InputStreamReader(connectionBatches.getInputStream()))) {
@@ -68,8 +65,6 @@
                     }
                     badges = new JSONArray(responseBody.toString());
                 }
-            } else {
-                debugMessage += "Error: Unable to fetch batches. Response Code: " + connectionBatches.getResponseCode() + "<br>";
             }
 
             // Fetch students for selected batch
@@ -77,9 +72,7 @@
                 URL urlStudents = new URL(apiUrlStudents + selectedBatch);
                 HttpURLConnection connectionStudents = (HttpURLConnection) urlStudents.openConnection();
                 connectionStudents.setRequestMethod("GET");
-                if (cookie != null) {
-                    connectionStudents.setRequestProperty("Cookie", cookie);
-                }
+                connectionStudents.setRequestProperty("Cookie", sessionCookie);
 
                 if (connectionStudents.getResponseCode() == 200) {
                     try (BufferedReader reader = new BufferedReader(new InputStreamReader(connectionStudents.getInputStream()))) {
@@ -90,13 +83,11 @@
                         }
                         students = new JSONArray(responseBody.toString());
                     }
-                } else {
-                    debugMessage += "Error: Unable to fetch students. Response Code: " + connectionStudents.getResponseCode() + "<br>";
                 }
             }
 
             // Assign students
-            if (request.getMethod().equalsIgnoreCase("POST")) {
+            if ("POST".equalsIgnoreCase(request.getMethod())) {
                 String[] studentIds = request.getParameterValues("studentIds");
                 if (studentIds != null && studentIds.length > 0) {
                     JSONObject payload = new JSONObject();
@@ -107,9 +98,7 @@
                     HttpURLConnection connectionAssign = (HttpURLConnection) urlAssign.openConnection();
                     connectionAssign.setRequestMethod("POST");
                     connectionAssign.setRequestProperty("Content-Type", "application/json");
-                    if (cookie != null) {
-                        connectionAssign.setRequestProperty("Cookie", cookie);
-                    }
+                    connectionAssign.setRequestProperty("Cookie", sessionCookie);
                     connectionAssign.setDoOutput(true);
 
                     try (OutputStream os = connectionAssign.getOutputStream()) {
@@ -118,18 +107,12 @@
                     }
 
                     if (connectionAssign.getResponseCode() == 200) {
-                        try (BufferedReader reader = new BufferedReader(new InputStreamReader(connectionAssign.getInputStream()))) {
-                            successMessage = reader.readLine();
-                        }
-                    } else {
-                        debugMessage += "Error: Unable to assign students. Response Code: " + connectionAssign.getResponseCode() + "<br>";
+                        successMessage = "Students successfully assigned to the interview.";
                     }
-                } else {
-                    debugMessage += "Error: No students selected.<br>";
                 }
             }
         } catch (Exception e) {
-            debugMessage += "Error: " + e.getMessage() + "<br>";
+            response.sendRedirect("./error.jsp"); // Redirect to an error page in case of failure
         }
     %>
 
@@ -193,25 +176,15 @@
     <% } %>
 </div>
 
-<!-- Debugging Section -->
-<div class="mt-8">
-    <% if (!debugMessage.isEmpty()) { %>
-    <div class="bg-yellow-100 text-yellow-800 p-4 rounded">
-        <h3 class="font-bold">Debug Information:</h3>
-        <p><%= debugMessage %></p>
-    </div>
-    <% } %>
-    <% if (!successMessage.isEmpty()) { %>
-    <div class="bg-green-100 text-green-800 p-4 rounded">
-        <h3 class="font-bold">Success:</h3>
-        <p><%= successMessage %></p>
-    </div>
-    <% } %>
+<!-- Success Message -->
+<% if (!successMessage.isEmpty()) { %>
+<div class="bg-green-100 text-green-800 p-4 rounded">
+    <p><%= successMessage %></p>
 </div>
+<% } %>
 
 <!-- Footer -->
-<footer
-        class="bg-gradient-to-r from-blue-800 to-blue-700 text-white text-center py-6 mt-auto shadow-inner">
+<footer class="bg-gradient-to-r from-blue-800 to-blue-700 text-white text-center py-6 mt-auto shadow-inner">
     <p class="text-sm font-light">© 2025 NIBMEvex. All Rights Reserved.</p>
 </footer>
 </body>

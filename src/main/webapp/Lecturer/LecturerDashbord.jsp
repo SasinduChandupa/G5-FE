@@ -53,7 +53,7 @@
             <a href="interviews.jsp" class="hover:underline font-medium">Interview</a>
             <a href="displayAnnouncement.jsp" class="hover:underline font-medium">Announcements</a>
             <a href="manageEvent.jsp" class="hover:underline font-medium">Manage Event</a>
-            <a href="logout.jsp" class="hover:underline font-medium">Logout</a>
+            <a href="../logout.jsp" class="hover:underline font-medium">Logout</a>
 
         </nav>
     </div>

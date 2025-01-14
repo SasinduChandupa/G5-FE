@@ -1,25 +1,15 @@
-<%@ page import="java.io.*, java.net.*" %>
-<%@ page import="java.util.*" %>
+<%@ page import="java.io.*, java.net.*, java.util.*" %>
+<%@ page import="org.json.JSONArray, org.json.JSONObject" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <jsp:include page="navbar.jsp" />
 <%
-    // Access the session and retrieve the userID
-    String sessionId = (String) session.getAttribute("userID");
-    if (sessionId == null || sessionId.isEmpty()) {
+    // Retrieve the session cookie
+    String sessionCookie = (String) session.getAttribute("sessionCookie");
+    if (sessionCookie == null || sessionCookie.isEmpty()) {
         response.sendRedirect("./logout.jsp");
         return;
     }
-%>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Announcement</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
-</head>
-<body class="bg-gray-100 h-screen flex flex-col">
-<%
+
     String batchApiUrl = "http://ec2-51-20-114-214.eu-north-1.compute.amazonaws.com:8081/api/v1/lecturer/badges";
     String batchDataJson = "[]";
 
@@ -28,13 +18,14 @@
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Accept", "application/json");
-        conn.setRequestProperty("Cookie", request.getHeader("Cookie"));
+        conn.setRequestProperty("Cookie", sessionCookie); // Pass session cookie
 
-        if (conn.getResponseCode() == 200) {
+        if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
             StringBuilder sb = new StringBuilder();
-            try (Scanner scanner = new Scanner(conn.getInputStream())) {
-                while (scanner.hasNext()) {
-                    sb.append(scanner.nextLine());
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
                 }
             }
             batchDataJson = sb.toString();
@@ -46,9 +37,9 @@
 
     List<Map<String, String>> batches = new ArrayList<>();
     try {
-        org.json.JSONArray jsonArray = new org.json.JSONArray(batchDataJson);
+        JSONArray jsonArray = new JSONArray(batchDataJson);
         for (int i = 0; i < jsonArray.length(); i++) {
-            org.json.JSONObject jsonObject = jsonArray.getJSONObject(i);
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
             Map<String, String> batch = new HashMap<>();
             batch.put("id", jsonObject.optString("bid")); // Use "bid" instead of "id"
             batch.put("name", jsonObject.optString("name"));
@@ -72,7 +63,7 @@
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestProperty("Cookie", request.getHeader("Cookie"));
+            conn.setRequestProperty("Cookie", sessionCookie); // Pass session cookie
             conn.setDoOutput(true);
 
             String jsonInput = String.format("{\"date\":\"%s\",\"name\":\"%s\",\"status\":\"%s\",\"description\":\"%s\",\"bid\":\"%s\"}",
@@ -83,18 +74,18 @@
                 os.flush();
             }
 
-            if (conn.getResponseCode() == 200 || conn.getResponseCode() == 201) {
+            if (conn.getResponseCode() == HttpURLConnection.HTTP_OK || conn.getResponseCode() == HttpURLConnection.HTTP_CREATED) {
                 message = "Announcement created successfully!";
             } else {
                 StringBuilder errorResponse = new StringBuilder();
-                try (Scanner errorScanner = new Scanner(conn.getErrorStream())) {
-                    while (errorScanner.hasNext()) {
-                        errorResponse.append(errorScanner.nextLine());
+                try (BufferedReader errorReader = new BufferedReader(new InputStreamReader(conn.getErrorStream()))) {
+                    String line;
+                    while ((line = errorReader.readLine()) != null) {
+                        errorResponse.append(line);
                     }
                 }
                 message = "Failed to create announcement. Error: " + conn.getResponseMessage() + ", Details: " + errorResponse.toString();
             }
-
             conn.disconnect();
         } catch (Exception e) {
             message = "Error while creating announcement: " + e.getMessage();

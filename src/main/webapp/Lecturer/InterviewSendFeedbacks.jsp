@@ -4,9 +4,11 @@
 <%@ page import="org.json.*" %>
 <jsp:include page="navbar.jsp" />
 <%
-  // Access the session and retrieve the userID
+  // Access the session and retrieve the userID and sessionCookie
   String sessionId = (String) session.getAttribute("userID");
-  if (sessionId == null || sessionId.isEmpty()) {
+  String sessionCookie = (String) session.getAttribute("sessionCookie");
+
+  if (sessionId == null || sessionId.isEmpty() || sessionCookie == null || sessionCookie.isEmpty()) {
     response.sendRedirect("./logout.jsp");
     return;
   }
@@ -37,23 +39,19 @@
         HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
         connection.setRequestMethod("GET");
         connection.setRequestProperty("Content-Type", "application/json");
-
-        String cookie = request.getHeader("Cookie");
-        if (cookie != null) {
-          connection.setRequestProperty("Cookie", cookie);
-        }
+        connection.setRequestProperty("Cookie", sessionCookie);
 
         int responseCode = connection.getResponseCode();
         if (responseCode == 200) {
-          BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-          StringBuilder responseBody = new StringBuilder();
-          String line;
+          try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+            StringBuilder responseBody = new StringBuilder();
+            String line;
 
-          while ((line = reader.readLine()) != null) {
-            responseBody.append(line);
+            while ((line = reader.readLine()) != null) {
+              responseBody.append(line);
+            }
+            assignedStudents = new JSONArray(responseBody.toString());
           }
-          reader.close();
-          assignedStudents = new JSONArray(responseBody.toString());
         } else {
           feedbackResponse = "Failed to fetch assigned students. HTTP Status: " + responseCode;
         }
@@ -74,11 +72,7 @@
           HttpURLConnection feedbackConnection = (HttpURLConnection) feedbackUrl.openConnection();
           feedbackConnection.setRequestMethod("POST");
           feedbackConnection.setRequestProperty("Content-Type", "application/json");
-
-          String cookie = request.getHeader("Cookie");
-          if (cookie != null) {
-            feedbackConnection.setRequestProperty("Cookie", cookie);
-          }
+          feedbackConnection.setRequestProperty("Cookie", sessionCookie);
 
           JSONObject feedbackPayload = new JSONObject();
           feedbackPayload.put("description", description);
@@ -95,14 +89,14 @@
           if (feedbackResponseCode == 200) {
             feedbackResponse = "Feedback sent successfully!";
           } else {
-            BufferedReader errorReader = new BufferedReader(new InputStreamReader(feedbackConnection.getErrorStream()));
-            StringBuilder errorResponse = new StringBuilder();
-            String line;
-            while ((line = errorReader.readLine()) != null) {
-              errorResponse.append(line);
+            try (BufferedReader errorReader = new BufferedReader(new InputStreamReader(feedbackConnection.getErrorStream()))) {
+              StringBuilder errorResponse = new StringBuilder();
+              String line;
+              while ((line = errorReader.readLine()) != null) {
+                errorResponse.append(line);
+              }
+              feedbackResponse = "Failed to send feedback. HTTP Status: " + feedbackResponseCode + ". Error: " + errorResponse.toString();
             }
-            errorReader.close();
-            feedbackResponse = "Failed to send feedback. HTTP Status: " + feedbackResponseCode + ". Error: " + errorResponse.toString();
           }
         } catch (Exception e) {
           feedbackResponse = "Error while sending feedback: " + e.getMessage();
@@ -152,8 +146,7 @@
 </div>
 
 <!-- Footer -->
-<footer
-        class="bg-gradient-to-r from-blue-800 to-blue-700 text-white text-center py-6 mt-auto shadow-inner">
+<footer class="bg-gradient-to-r from-blue-800 to-blue-700 text-white text-center py-6 mt-auto shadow-inner">
   <p class="text-sm font-light">© 2025 NIBMEvex. All Rights Reserved.</p>
 </footer>
 </body>

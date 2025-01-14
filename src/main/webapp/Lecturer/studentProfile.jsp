@@ -2,9 +2,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <jsp:include page="navbar.jsp" />
 <%
-  // Access the session and retrieve the userID
-  String sessionId = (String) session.getAttribute("userID");
-  if (sessionId == null || sessionId.isEmpty()) {
+  // Access the session and retrieve the sessionCookie
+  String sessionCookie = (String) session.getAttribute("sessionCookie");
+  if (sessionCookie == null || sessionCookie.isEmpty()) {
     response.sendRedirect("./logout.jsp");
     return;
   }
@@ -37,7 +37,7 @@
       URL url = new URL(apiUrl);
       connection = (HttpURLConnection) url.openConnection();
       connection.setRequestMethod("GET");
-      connection.setRequestProperty("Cookie", request.getHeader("Cookie"));
+      connection.setRequestProperty("Cookie", sessionCookie);
       connection.setRequestProperty("Accept", "application/json");
 
       int status = connection.getResponseCode();

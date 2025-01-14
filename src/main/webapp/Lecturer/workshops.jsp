@@ -8,7 +8,8 @@
 <%
     // Access the session and retrieve the userID
     String sessionId = (String) session.getAttribute("userID");
-    if (sessionId == null || sessionId.isEmpty()) {
+    String sessionCookie = (String) session.getAttribute("sessionCookie");
+    if (sessionId == null || sessionId.isEmpty() || sessionCookie == null || sessionCookie.isEmpty()) {
         response.sendRedirect("./logout.jsp");
         return;
     }
@@ -43,9 +44,7 @@
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Content-Type", "application/json");
-
-            String cookie = request.getHeader("Cookie");
-            connection.setRequestProperty("Cookie", cookie);
+            connection.setRequestProperty("Cookie", sessionCookie);
 
             int responseCode = connection.getResponseCode();
 

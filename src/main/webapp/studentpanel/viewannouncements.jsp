@@ -10,7 +10,8 @@
 <%
     // Access the session and retrieve the userID
     String sessionId = (String) session.getAttribute("userID");
-    if (sessionId == null || sessionId.isEmpty()) {
+    String sessionCookie = (String) session.getAttribute("sessionCookie");
+    if (sessionId == null || sessionId.isEmpty() || sessionCookie == null) {
         response.sendRedirect("../logout.jsp");
         return;
     }
@@ -35,11 +36,8 @@
         connection.setRequestMethod("GET");
         connection.setRequestProperty("Accept", "application/json");
 
-        // Ensure cookies are sent if available
-        String cookieHeader = request.getHeader("Cookie");
-        if (cookieHeader != null) {
-            connection.setRequestProperty("Cookie", cookieHeader);
-        }
+        // Add session cookie for authentication
+        connection.setRequestProperty("Cookie", sessionCookie);
 
         // Read the response
         int statusCode = connection.getResponseCode();
@@ -72,8 +70,8 @@
         }
         h2 {
             color: #333;
-            font-weight: bold;  /* Make the text bold */
-            font-size: 32px;     /* Increase the font size */
+            font-weight: bold;
+            font-size: 32px;
         }
         .announcement {
             background: #fff;
@@ -121,7 +119,6 @@
             writer.println("<p style='color: red;'>Error: Unable to fetch announcements. HTTP Status: " + statusCode + "</p>");
         }
     } catch (Exception e) {
-        // Handle exceptions
         writer.println("<p style='color: red;'>Error: " + e.getMessage() + "</p>");
     } finally {
         if (connection != null) {

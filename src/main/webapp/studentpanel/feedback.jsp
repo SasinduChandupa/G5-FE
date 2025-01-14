@@ -26,8 +26,8 @@
         }
         h2 {
             color: #333;
-            font-weight: bold;  /* Make the text bold */
-            font-size: 32px;     /* Increase the font size */
+            font-weight: bold;
+            font-size: 32px;
         }
         form {
             margin-top: 20px;
@@ -82,7 +82,7 @@
 <%
     String message = null;
     String messageType = "";
-    String eid = request.getParameter("eid"); // Get EID from URL
+    String eid = request.getParameter("eid");
 
     if (eid == null || eid.trim().isEmpty()) {
         message = "Error: EID is missing.";
@@ -92,41 +92,36 @@
     if (request.getMethod().equalsIgnoreCase("POST")) {
         String feedback = request.getParameter("feedback");
 
-        // Check if feedback is provided
         if (feedback == null || feedback.trim().isEmpty()) {
-            message = "Please fill in all fields.";
+            message = "Please provide feedback.";
             messageType = "error";
         } else {
             String apiUrl = "http://ec2-51-20-114-214.eu-north-1.compute.amazonaws.com:8081/api/v1/student/send";
             HttpURLConnection connection = null;
 
             try {
-                // Prepare the JSON payload
                 JSONObject payload = new JSONObject();
-                payload.put("description", feedback);  // Changed key to "description"
+                payload.put("description", feedback);
                 payload.put("eid", eid);
 
-                // Send the POST request
                 URL url = new URL(apiUrl);
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");
                 connection.setRequestProperty("Content-Type", "application/json");
                 connection.setDoOutput(true);
 
-                // Ensure cookies are sent if available
-                String cookieHeader = request.getHeader("Cookie");
+                String cookieHeader = (String) session.getAttribute("sessionCookie");
                 if (cookieHeader != null) {
                     connection.setRequestProperty("Cookie", cookieHeader);
                 }
 
-                OutputStream os = connection.getOutputStream();
-                os.write(payload.toString().getBytes("UTF-8"));
-                os.close();
+                try (OutputStream os = connection.getOutputStream()) {
+                    os.write(payload.toString().getBytes("UTF-8"));
+                }
 
                 int statusCode = connection.getResponseCode();
-
                 if (statusCode == HttpURLConnection.HTTP_OK) {
-                    message = "Feedback sent to lecturer successfully.";
+                    message = "Feedback sent successfully.";
                     messageType = "success";
                 } else {
                     message = "Error: Unable to send feedback. HTTP Status: " + statusCode;
@@ -148,16 +143,11 @@
 <div class="message <%= messageType %>"><%= message %></div>
 <% } %>
 
-<!-- Only display the EID as a hidden field (if needed for future use) -->
 <form method="post" action="./feedback.jsp">
     <label for="feedback">Feedback:</label>
     <textarea id="feedback" name="feedback" rows="5" required></textarea>
-
-    <!-- Hidden field to send EID in case it's needed elsewhere -->
     <input type="hidden" name="eid" value="<%= eid %>">
-
     <button type="submit">Submit Feedback</button>
 </form>
-
 </body>
 </html>

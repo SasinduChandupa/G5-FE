@@ -4,9 +4,9 @@
 <jsp:include page="navbar.jsp" />
 
 <%
-    // Access the session and retrieve the userID
-    String sessionId = (String) session.getAttribute("userID");
-    if (sessionId == null || sessionId.isEmpty()) {
+    // Access the session and retrieve the sessionCookie
+    String sessionCookie = (String) session.getAttribute("sessionCookie");
+    if (sessionCookie == null || sessionCookie.isEmpty()) {
         response.sendRedirect("./logout.jsp");
         return;
     }
@@ -39,9 +39,8 @@
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Content-Type", "application/json");
 
-            // Add the cookie for authentication
-            String cookie = request.getHeader("Cookie");
-            connection.setRequestProperty("Cookie", cookie);
+            // Add the session cookie for authentication
+            connection.setRequestProperty("Cookie", sessionCookie);
 
             int responseCode = connection.getResponseCode();
 
@@ -58,9 +57,11 @@
 
                 // Parse JSON response
                 announcements = new JSONArray(responseBody.toString());
+            } else {
+                out.println("<p class='text-red-500'>Failed to fetch announcements. HTTP Status: " + responseCode + "</p>");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            out.println("<p class='text-red-500'>Error fetching announcements: " + e.getMessage() + "</p>");
         }
     %>
 

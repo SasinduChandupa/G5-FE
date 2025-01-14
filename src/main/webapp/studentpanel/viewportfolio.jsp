@@ -94,10 +94,10 @@
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Accept", "application/json");
 
-            // Forward session cookies
-            String cookies = request.getHeader("Cookie");
-            if (cookies != null) {
-                connection.setRequestProperty("Cookie", cookies);
+            // Pass session cookie
+            String sessionCookie = (String) session.getAttribute("sessionCookie");
+            if (sessionCookie != null) {
+                connection.setRequestProperty("Cookie", sessionCookie);
             }
 
             int responseCode = connection.getResponseCode();
@@ -154,8 +154,6 @@
 
             <h3 class="text-xl font-bold text-blue-600 mb-3  ">Education</h3>
             <p class="text-gray-700 mb-5 leading-relaxed font-bold"><%= portfolioEducation %></p>
-
-
         </div>
     </div>
 

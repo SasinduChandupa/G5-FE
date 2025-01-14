@@ -27,7 +27,6 @@
             margin: 0;
             padding: 0;
         }
-
         .form-group {
             margin-bottom: 15px;
         }
@@ -82,13 +81,15 @@
         String alertMessage = null;
         String alertType = null;
 
+        // Fetch existing portfolio data
         try {
             URL url = new URL("http://ec2-51-20-114-214.eu-north-1.compute.amazonaws.com:8081/api/v1/students/getportfolio");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Accept", "application/json");
 
-            String cookies = request.getHeader("Cookie");
+            // Pass cookies
+            String cookies = (String) session.getAttribute("sessionCookie");
             if (cookies != null) {
                 connection.setRequestProperty("Cookie", cookies);
             }
@@ -123,6 +124,7 @@
             achievements = portfolio.optString("portfolioAchievements", "");
         }
 
+        // Handle POST request to update portfolio
         if ("POST".equalsIgnoreCase(request.getMethod())) {
             String newGithubUsername = request.getParameter("githubUsername");
             String newDescription = request.getParameter("description");
@@ -135,7 +137,8 @@
                 connection.setRequestMethod("PUT");
                 connection.setRequestProperty("Content-Type", "application/json");
 
-                String cookies = request.getHeader("Cookie");
+                // Pass cookies
+                String cookies = (String) session.getAttribute("sessionCookie");
                 if (cookies != null) {
                     connection.setRequestProperty("Cookie", cookies);
                 }
@@ -177,7 +180,7 @@
                         name="githubUsername"
                         value="<%= githubUsername %>"
                         required
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg"
                 >
             </div>
             <div>
@@ -186,7 +189,7 @@
                         id="description"
                         name="description"
                         required
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg"
                 ><%= description %></textarea>
             </div>
             <div>
@@ -195,7 +198,7 @@
                         id="education"
                         name="education"
                         required
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg"
                 ><%= education %></textarea>
             </div>
             <div>
@@ -204,18 +207,17 @@
                         id="achievements"
                         name="achievements"
                         required
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg"
                 ><%= achievements %></textarea>
             </div>
             <button
                     type="submit"
-                    class="w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
+                    class="w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700"
             >
                 Update Portfolio
             </button>
         </form>
     </div>
-
 
     <% if (alertMessage != null) { %>
     <div class="alert alert-<%= alertType %>"><%= alertMessage %></div>

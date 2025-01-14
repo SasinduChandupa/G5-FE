@@ -8,9 +8,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <jsp:include page="navbar.jsp" />
 <%
-    // Access the session and retrieve the userID
-    String sessionId = (String) session.getAttribute("userID");
-    if (sessionId == null || sessionId.isEmpty()) {
+    // Access the session and retrieve the session cookie
+    String sessionCookie = (String) session.getAttribute("sessionCookie");
+    if (sessionCookie == null || sessionCookie.isEmpty()) {
         response.sendRedirect("./logout.jsp");
         return;
     }
@@ -49,13 +49,7 @@
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 connection.setRequestProperty("Content-Type", "application/json");
-
-                String cookie = request.getHeader("Cookie");
-                if (cookie != null && !cookie.isEmpty()) {
-                    connection.setRequestProperty("Cookie", cookie);
-                } else {
-                    throw new Exception("Authentication cookie is missing. Please log in.");
-                }
+                connection.setRequestProperty("Cookie", sessionCookie); // Pass session cookie for authentication
 
                 int responseCode = connection.getResponseCode();
                 if (responseCode == 200) {
@@ -87,11 +81,7 @@
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("PUT");
                     connection.setRequestProperty("Content-Type", "application/json");
-
-                    String cookie = request.getHeader("Cookie");
-                    if (cookie != null && !cookie.isEmpty()) {
-                        connection.setRequestProperty("Cookie", cookie);
-                    }
+                    connection.setRequestProperty("Cookie", sessionCookie); // Pass session cookie for authentication
 
                     connection.setDoOutput(true);
                     OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
@@ -119,11 +109,7 @@
                     URL url = new URL(deleteUrl);
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("DELETE");
-
-                    String cookie = request.getHeader("Cookie");
-                    if (cookie != null && !cookie.isEmpty()) {
-                        connection.setRequestProperty("Cookie", cookie);
-                    }
+                    connection.setRequestProperty("Cookie", sessionCookie); // Pass session cookie for authentication
 
                     int responseCode = connection.getResponseCode();
                     if (responseCode == 200) {

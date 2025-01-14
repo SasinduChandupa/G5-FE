@@ -7,9 +7,11 @@
 <jsp:include page="navbar.jsp" />
 
 <%
-    // Access the session and retrieve the userID
+    // Access the session and retrieve the userID and sessionCookie
     String sessionId = (String) session.getAttribute("userID");
-    if (sessionId == null || sessionId.isEmpty()) {
+    String sessionCookie = (String) session.getAttribute("sessionCookie");
+
+    if (sessionId == null || sessionId.isEmpty() || sessionCookie == null || sessionCookie.isEmpty()) {
         response.sendRedirect("./logout.jsp");
         return;
     }
@@ -85,10 +87,7 @@
                     connection.setRequestProperty("Content-Type", "application/json");
 
                     // Add authentication cookie
-                    String cookie = request.getHeader("Cookie");
-                    if (cookie != null) {
-                        connection.setRequestProperty("Cookie", cookie);
-                    }
+                    connection.setRequestProperty("Cookie", sessionCookie); // Pass session cookie
 
                     // Create JSON payload
                     JSONObject payload = new JSONObject();

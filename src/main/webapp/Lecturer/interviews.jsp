@@ -7,9 +7,11 @@
 <jsp:include page="navbar.jsp" />
 
 <%
-    // Access the session and retrieve the userID
+    // Access the session and retrieve the userID and sessionCookie
     String sessionId = (String) session.getAttribute("userID");
-    if (sessionId == null || sessionId.isEmpty()) {
+    String sessionCookie = (String) session.getAttribute("sessionCookie");
+
+    if (sessionId == null || sessionId.isEmpty() || sessionCookie == null || sessionCookie.isEmpty()) {
         response.sendRedirect("./logout.jsp");
         return;
     }
@@ -46,58 +48,57 @@
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Content-Type", "application/json");
 
-            // Add the cookie for authentication
-            String cookie = request.getHeader("Cookie");
-            connection.setRequestProperty("Cookie", cookie);
+            // Add session cookie for authentication
+            connection.setRequestProperty("Cookie", sessionCookie);
 
             int responseCode = connection.getResponseCode();
 
-            if (responseCode == 200) {
+            if (responseCode == HttpURLConnection.HTTP_OK) {
                 // Read the response
-                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                StringBuilder responseBody = new StringBuilder();
-                String line;
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                    StringBuilder responseBody = new StringBuilder();
+                    String line;
 
-                while ((line = reader.readLine()) != null) {
-                    responseBody.append(line);
-                }
-                reader.close();
+                    while ((line = reader.readLine()) != null) {
+                        responseBody.append(line);
+                    }
 
-                // Parse JSON response
-                JSONArray interviews = new JSONArray(responseBody.toString());
+                    // Parse JSON response
+                    JSONArray interviews = new JSONArray(responseBody.toString());
 
-                // Define current date
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(new Date());
-                calendar.set(Calendar.HOUR_OF_DAY, 0);
-                calendar.set(Calendar.MINUTE, 0);
-                calendar.set(Calendar.SECOND, 0);
-                calendar.set(Calendar.MILLISECOND, 0);
-                Date currentDate = calendar.getTime();
-
-                for (int i = 0; i < interviews.length(); i++) {
-                    JSONObject interview = interviews.getJSONObject(i);
-                    String date = interview.optString("date", "N/A");
-
-                    // Parse interview date
-                    Date interviewDate = sdf.parse(date);
-
-                    // Reset time to midnight for comparison
-                    calendar.setTime(interviewDate);
+                    // Define current date
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(new Date());
                     calendar.set(Calendar.HOUR_OF_DAY, 0);
                     calendar.set(Calendar.MINUTE, 0);
                     calendar.set(Calendar.SECOND, 0);
                     calendar.set(Calendar.MILLISECOND, 0);
-                    interviewDate = calendar.getTime();
+                    Date currentDate = calendar.getTime();
 
-                    // Categorize interviews
-                    if (interviewDate.after(currentDate)) {
-                        upcomingInterviews.put(interview);  // Upcoming interviews
-                    } else if (interviewDate.equals(currentDate)) {
-                        ongoingInterviews.put(interview);  // Ongoing interviews
-                    } else {
-                        completedInterviews.put(interview);  // Completed interviews
+                    for (int i = 0; i < interviews.length(); i++) {
+                        JSONObject interview = interviews.getJSONObject(i);
+                        String date = interview.optString("date", "N/A");
+
+                        // Parse interview date
+                        Date interviewDate = sdf.parse(date);
+
+                        // Reset time to midnight for comparison
+                        calendar.setTime(interviewDate);
+                        calendar.set(Calendar.HOUR_OF_DAY, 0);
+                        calendar.set(Calendar.MINUTE, 0);
+                        calendar.set(Calendar.SECOND, 0);
+                        calendar.set(Calendar.MILLISECOND, 0);
+                        interviewDate = calendar.getTime();
+
+                        // Categorize interviews
+                        if (interviewDate.after(currentDate)) {
+                            upcomingInterviews.put(interview);  // Upcoming interviews
+                        } else if (interviewDate.equals(currentDate)) {
+                            ongoingInterviews.put(interview);  // Ongoing interviews
+                        } else {
+                            completedInterviews.put(interview);  // Completed interviews
+                        }
                     }
                 }
             }
@@ -116,7 +117,7 @@
         <p><strong>Location:</strong> <%= interview.optString("location", "N/A") %></p>
         <p><strong>Date:</strong> <%= interview.optString("date", "N/A") %></p>
 
-        <!-- Send feedback Button -->
+        <!-- Send Feedback Button -->
         <form method="GET" action="InterviewSendFeedbacks.jsp" class="inline-block">
             <input type="hidden" name="eid" value="<%= interview.optString("eid", "N/A") %>">
             <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded mt-2">
@@ -144,7 +145,7 @@
         <p><strong>Location:</strong> <%= interview.optString("location", "N/A") %></p>
         <p><strong>Date:</strong> <%= interview.optString("date", "N/A") %></p>
 
-        <!-- Send feedback Button -->
+        <!-- Send Feedback Button -->
         <form method="GET" action="InterviewSendFeedbacks.jsp" class="inline-block">
             <input type="hidden" name="eid" value="<%= interview.optString("eid", "N/A") %>">
             <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded mt-2">
@@ -172,7 +173,7 @@
         <p><strong>Location:</strong> <%= interview.optString("location", "N/A") %></p>
         <p><strong>Date:</strong> <%= interview.optString("date", "N/A") %></p>
 
-        <!-- Send feedback Button -->
+        <!-- Send Feedback Button -->
         <form method="GET" action="InterviewSendFeedbacks.jsp" class="inline-block">
             <input type="hidden" name="eid" value="<%= interview.optString("eid", "N/A") %>">
             <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded mt-2">
@@ -192,8 +193,7 @@
 </div>
 
 <!-- Footer -->
-<footer
-        class="bg-gradient-to-r from-blue-800 to-blue-700 text-white text-center py-6 mt-auto shadow-inner">
+<footer class="bg-gradient-to-r from-blue-800 to-blue-700 text-white text-center py-6 mt-auto shadow-inner">
     <p class="text-sm font-light">&copy; 2025 NIBMEvex. All Rights Reserved.</p>
 </footer>
 
