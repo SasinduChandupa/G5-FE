@@ -90,7 +90,7 @@
 <div class="container">
     <h1>Manage Students</h1>
     <%
-        String apiUrl = "http://localhost:8080/api/v1/admin/students";
+        String apiUrl = "http://51.20.114.214:8081/api/v1/admin/students";
         String studentsData = null;
 
         try {
@@ -99,9 +99,10 @@
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
 
-            String cookies = request.getHeader("Cookie");
-            if (cookies != null) {
-                conn.setRequestProperty("Cookie", cookies);
+            // Retrieve the session cookie and pass it in the request
+            String sessionCookie = (String) session.getAttribute("sessionCookie");
+            if (sessionCookie != null) {
+                conn.setRequestProperty("Cookie", sessionCookie);
             }
 
             int responseCode = conn.getResponseCode();

@@ -112,16 +112,16 @@
                 <select id="badge" name="badge" required>
                     <option value="">Select Badge</option>
                     <%
-                        String apiUrl = "http://localhost:8080/api/v1/admin/batches/all";
+                        String apiUrl = "http://51.20.114.214:8081/api/v1/admin/batches/all";
                         try {
                             URL url = new URL(apiUrl);
                             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                             connection.setRequestMethod("GET");
                             connection.setRequestProperty("Accept", "application/json");
 
-                            String cookies = request.getHeader("Cookie");
-                            if (cookies != null) {
-                                connection.setRequestProperty("Cookie", cookies);
+                            String sessionCookie = (String) session.getAttribute("sessionCookie");
+                            if (sessionCookie != null) {
+                                connection.setRequestProperty("Cookie", sessionCookie);
                             }
 
                             int responseCode = connection.getResponseCode();
@@ -166,14 +166,14 @@
 
             if (name != null && email != null && username != null && password != null && age != null && badge != null) {
                 try {
-                    URL url = new URL("http://localhost:8080/api/v1/admin/student/register");
+                    URL url = new URL("http://51.20.114.214:8081/api/v1/admin/student/register");
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("POST");
                     connection.setRequestProperty("Content-Type", "application/json");
 
-                    String cookies = request.getHeader("Cookie");
-                    if (cookies != null) {
-                        connection.setRequestProperty("Cookie", cookies);
+                    String sessionCookie = (String) session.getAttribute("sessionCookie");
+                    if (sessionCookie != null) {
+                        connection.setRequestProperty("Cookie", sessionCookie);
                     }
 
                     connection.setDoOutput(true);

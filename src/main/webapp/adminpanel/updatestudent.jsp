@@ -103,14 +103,15 @@
 
             try {
                 // Construct the API endpoint for updating a student
-                URL url = new URL("http://localhost:8080/api/v1/admin/student/" + sid);
+                URL url = new URL("http://51.20.114.214:8081/api/v1/admin/student/" + sid);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("PUT");
                 connection.setRequestProperty("Content-Type", "application/json");
 
-                String cookies = request.getHeader("Cookie");
-                if (cookies != null) {
-                    connection.setRequestProperty("Cookie", cookies);
+                // Retrieve the session cookie and pass it in the request
+                String sessionCookie = (String) session.getAttribute("sessionCookie");
+                if (sessionCookie != null) {
+                    connection.setRequestProperty("Cookie", sessionCookie);
                 }
 
                 connection.setDoOutput(true);
@@ -137,6 +138,8 @@
                     alertMessage = "Failed to update student. HTTP Code: " + responseCode;
                     alertType = "danger";
                 }
+
+                connection.disconnect();
             } catch (Exception e) {
                 alertMessage = "Error: " + e.getMessage();
                 alertType = "danger";

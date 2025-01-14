@@ -6,6 +6,7 @@
         <entry key="file://$PROJECT_DIR$/src/main/webapp/Interviews.jsp" value="file://$PROJECT_DIR$/src/main/webapp" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/admin-login.jsp" value="file://$PROJECT_DIR$/src/main/webapp" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/adminloged.jsp" value="file://$PROJECT_DIR$/src/main/webapp" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/adminpanel/sessionHandler.jsp" value="file://$PROJECT_DIR$/src/main/webapp/adminpanel" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/auth/admin-login.jsp" value="file://$PROJECT_DIR$/src/main/webapp" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/studentpanel/studentdashboard.jsp" value="file://$PROJECT_DIR$/src/main/webapp/studentpanel" />
       </map>

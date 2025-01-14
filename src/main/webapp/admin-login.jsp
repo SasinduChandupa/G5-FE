@@ -1,102 +1,70 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.io.*, java.net.*" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Login</title>
+    <title>Admin Login</title>
     <style>
-        /* Body Styling */
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #e74c3c;
-            height: 100vh;
+            font-family: Arial, sans-serif;
+            background: #f7f7f7;
             display: flex;
             justify-content: center;
             align-items: center;
+            height: 100vh;
             margin: 0;
         }
-
-        /* Login Container Styling */
         .login-container {
-            background: #fff;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
-            width: 350px;
-            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         }
-
         .login-container h2 {
-            font-size: 1.8rem;
-            color: #333;
             margin-bottom: 20px;
+            font-size: 1.5rem;
+            text-align: center;
+            color: #333;
         }
-
-        /* Form Styling */
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
-
         .form-group label {
-            font-weight: bold;
-            color: #333;
             display: block;
-            margin-bottom: 8px;
+            font-weight: bold;
+            margin-bottom: 5px;
         }
-
         .form-group input {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-            outline: none;
-            transition: border 0.3s ease;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
-
-        .form-group input:focus {
-            border-color: #ff7e5f;
-        }
-
-        /* Button Styling */
         .btn {
             width: 100%;
-            padding: 12px;
-            background: #ff7e5f;
+            padding: 10px;
+            background: #007bff;
             color: white;
-            font-size: 1.1rem;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
-            transition: background 0.3s ease;
         }
-
         .btn:hover {
-            background: #feb47b;
+            background: #0056b3;
         }
-
-        /* Result Message Styling */
         .result {
-            margin-top: 20px;
-            font-size: 1rem;
-            color: #e74c3c;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 400px) {
-            .login-container {
-                width: 90%;
-                padding: 30px;
-            }
+            margin-top: 15px;
+            color: red;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-
 <div class="login-container">
     <h2>Admin Login</h2>
-    <form id="adminLoginForm">
+    <form method="post">
         <div class="form-group">
             <label for="username">Username</label>
             <input type="text" id="username" name="username" required>
@@ -105,45 +73,52 @@
             <label for="password">Password</label>
             <input type="password" id="password" name="password" required>
         </div>
-        <button type="button" class="btn" id="adminLoginButton">Login</button>
-        <div class="result" id="result"></div>
+        <button type="submit" class="btn">Login</button>
     </form>
-</div>
+    <div class="result">
+        <%
+            if (request.getMethod().equalsIgnoreCase("POST")) {
+                String username = request.getParameter("username");
+                String password = request.getParameter("password");
 
-<script>
-    const studentLoginEndpoint = "http://localhost:8080/api/v1/admin/login";
+                try {
+                    // Define the login API URL
+                    URL url = new URL("http://51.20.114.214:8081/api/v1/admin/login");
 
-    // Student Login Function
-    async function studentLogin() {
-        const username = document.getElementById("username").value;
-        const password = document.getElementById("password").value;
+                    // Open a connection
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type", "application/json");
+                    conn.setDoOutput(true);
 
-        try {
-            const response = await fetch(studentLoginEndpoint, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ username, password }),
-                credentials: "include" // Include cookies in the request
-            });
+                    // Prepare JSON payload
+                    String payload = "{\"username\":\"" + username + "\",\"password\":\"" + password + "\"}";
 
-            if (response.ok) {
-                document.getElementById("result").innerText = "Login successful! Redirecting...";
-                setTimeout(() => {
-                    window.location.href = "adminpanel/sessionHandler.jsp"; // Redirect after successful login
-                }, 2000);
-            } else {
-                const error = await response.text();
-                document.getElementById("result").innerText = "Login failed: " + error;
+                    // Send request
+                    OutputStream os = conn.getOutputStream();
+                    os.write(payload.getBytes("UTF-8"));
+                    os.close();
+
+                    // Read response
+                    int responseCode = conn.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        // Forward session cookies from the response
+                        String cookieHeader = conn.getHeaderField("Set-Cookie");
+                        if (cookieHeader != null) {
+                            session.setAttribute("sessionCookie", cookieHeader);
+                        }
+
+                        out.println("<p style='color: green;'>Login successful! Redirecting...</p>");
+                        response.sendRedirect("adminpanel/sessionHandler.jsp");
+                    } else {
+                        out.println("<p>Login failed: Invalid credentials</p>");
+                    }
+                } catch (Exception e) {
+                    out.println("<p>Error during login: " + e.getMessage() + "</p>");
+                }
             }
-        } catch (error) {
-            document.getElementById("result").innerText = "Error during login: " + error.message;
-        }
-    }
-
-    // Attach event listener to student login button
-    document.getElementById("adminLoginForm").addEventListener("click", studentLogin);
-</script>
+        %>
+    </div>
+</div>
 </body>
 </html>
