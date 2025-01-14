@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.net.*, java.io.*, org.json.*" %>
 <jsp:include page="nav.jsp" />
 <%
@@ -93,7 +93,7 @@
             status = "all"; // Default to "all" to show both complete and upcoming events
         }
 
-        String apiUrl = "http://ec2-51-20-114-214.eu-north-1.compute.amazonaws.com:8081/api/v1/admin/events";
+        String apiUrl = "http://51.20.114.214:8081/api/v1/admin/events";
         if (!status.equals("all")) {
             apiUrl += "?status=" + status;  // Add status filter if it's not "all"
         }
@@ -107,10 +107,10 @@
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
 
-            // Add cookies if needed
-            String cookies = request.getHeader("Cookie");
-            if (cookies != null) {
-                conn.setRequestProperty("Cookie", cookies);
+            // Retrieve cookies from the session
+            String sessionCookie = (String) session.getAttribute("sessionCookie");
+            if (sessionCookie != null) {
+                conn.setRequestProperty("Cookie", sessionCookie);
             }
 
             int responseCode = conn.getResponseCode();

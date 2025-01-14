@@ -100,14 +100,15 @@
 
             try {
                 // Construct the API endpoint for updating a lecturer
-                URL url = new URL("http://ec2-51-20-114-214.eu-north-1.compute.amazonaws.com:8081/api/v1/admin/lecturer/" + lid);
+                URL url = new URL("http://51.20.114.214:8081/api/v1/admin/lecturer/" + lid);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("PUT");
                 connection.setRequestProperty("Content-Type", "application/json");
 
-                String cookies = request.getHeader("Cookie");
-                if (cookies != null) {
-                    connection.setRequestProperty("Cookie", cookies);
+                // Retrieve the session cookie and pass it in the request
+                String sessionCookie = (String) session.getAttribute("sessionCookie");
+                if (sessionCookie != null) {
+                    connection.setRequestProperty("Cookie", sessionCookie);
                 }
 
                 connection.setDoOutput(true);
@@ -132,6 +133,8 @@
                     alertMessage = "Failed to update lecturer. HTTP Code: " + responseCode;
                     alertType = "danger";
                 }
+
+                connection.disconnect();
             } catch (Exception e) {
                 alertMessage = "Error: " + e.getMessage();
                 alertType = "danger";

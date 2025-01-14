@@ -49,38 +49,44 @@
     <h1>Admin Dashboard</h1>
     <canvas id="adminChart" width="400" height="200"></canvas>
     <%
-        String apiUrl = "http://ec2-51-20-114-214.eu-north-1.compute.amazonaws.com:8081/api/v1/admin/state";
-        JSONObject adminData = null;
-        try {
-            URL url = new URL(apiUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.setRequestProperty("Accept", "application/json");
+        // Retrieve the session cookie
+        String sessionCookie = (String) session.getAttribute("sessionCookie");
 
-            // Forward session cookies from the request
-            String cookies = request.getHeader("Cookie");
-            if (cookies != null) {
-                connection.setRequestProperty("Cookie", cookies);
-            }
+        JSONObject adminData = null; // Corrected to org.json.JSONObject
 
-            int responseCode = connection.getResponseCode();
-            if (responseCode == 200) {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                StringBuilder jsonResponse = new StringBuilder();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    jsonResponse.append(line);
+        if (sessionCookie != null) {
+            try {
+                // Define the API URL
+                URL url = new URL("http://51.20.114.214:8081/api/v1/admin/state");
+
+                // Open the connection
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+                conn.setRequestProperty("Accept", "application/json");
+                conn.setRequestProperty("Cookie", sessionCookie); // Pass the session cookie
+
+                // Check the response code
+                int responseCode = conn.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    // Read the response
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    StringBuilder jsonResponse = new StringBuilder(); // Changed variable name to avoid conflict
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        jsonResponse.append(line);
+                    }
+                    reader.close();
+
+                    // Parse the JSON response
+                    adminData = new JSONObject(jsonResponse.toString());
+                } else {
+                    out.println("<div class='error'>Failed to fetch admin data. Response Code: " + responseCode + "</div>");
                 }
-                reader.close();
-                adminData = new JSONObject(jsonResponse.toString());
-            } else {
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to fetch data. HTTP Code: " + responseCode);
-                return;
+            } catch (Exception e) {
+                out.println("<div class='error'>Error fetching admin data: " + e.getMessage() + "</div>");
             }
-            connection.disconnect();
-        } catch (Exception e) {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error fetching data: " + e.getMessage());
-            return;
+        } else {
+            out.println("<div class='error'>Session not found. Please log in again.</div>");
         }
     %>
     <script>

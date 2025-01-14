@@ -83,7 +83,7 @@
 <div class="container">
     <h1>Manage Batches</h1>
     <%
-        String apiUrl = "http://ec2-51-20-114-214.eu-north-1.compute.amazonaws.com:8081/api/v1/admin/batches/all";
+        String apiUrl = "http://51.20.114.214:8081/api/v1/admin/batches/all";
         String batchesData = null;
 
         try {
@@ -92,9 +92,10 @@
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
 
-            String cookies = request.getHeader("Cookie");
-            if (cookies != null) {
-                conn.setRequestProperty("Cookie", cookies);
+            // Retrieve the session cookie and pass it in the request
+            String sessionCookie = (String) session.getAttribute("sessionCookie");
+            if (sessionCookie != null) {
+                conn.setRequestProperty("Cookie", sessionCookie);
             }
 
             int responseCode = conn.getResponseCode();
